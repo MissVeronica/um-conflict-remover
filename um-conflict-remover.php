@@ -126,7 +126,7 @@ function um_settings_structure_conflict_remover( $settings_structure ) {
     foreach ( $active_plugins as $plugin_path ) {
 
         $folder = explode( '/', $plugin_path );
-        if ( in_array( $folder[0], array( 'ultimate-member', 'um-conflict-remover' ))) continue;
+        if ( in_array( $folder[0], array( 'ultimate-member', 'um-conflict-remover', 'um-conflict-remover-main' ))) continue;
 
         $plugin_list['plugins/' . $folder[0] . '/'] = $plugins[$plugin_path]['Name'];
     }
