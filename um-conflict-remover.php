@@ -2,7 +2,7 @@
 /**
  * Plugin Name:     Ultimate Member - Conflict Remover
  * Description:     Extension to Ultimate Member to exclude conflicting scripts and styles from UM pages.
- * Version:         1.0.0 
+ * Version:         2.0.0 
  * Requires PHP:    7.4
  * Author:          Miss Veronica
  * License:         GPL v2 or later
@@ -31,6 +31,7 @@ if( is_admin()) {
 function um_conflict_remover_scripts_and_styles() {
 
     global $wp_scripts, $wp_styles;
+    global $post;
   
     $um_pages = UM()->options()->get( 'um_conflict_remover_um_pages' );
     $remove = false;
@@ -51,6 +52,23 @@ function um_conflict_remover_scripts_and_styles() {
             }
         }
     }
+
+    if ( isset( $post ) && is_a( $post, 'WP_Post' ) ) {
+
+        $um_posts = array_map( 'intval', explode( ',', UM()->options()->get( 'um_conflict_remover_um_page_ids' ))); 
+
+		if ( in_array( $post->ID, $um_posts ) ) {
+			$remove = true;
+		}
+
+		if ( strpos( $post->post_content, '[ultimatemember_' ) !== FALSE ) {
+			$remove = true;
+		}
+
+		if ( strpos( $post->post_content, '[ultimatemember form_id' ) !== FALSE ) {
+			$remove = true;
+		}
+	}
 
     if ( $remove ) {
 
@@ -140,6 +158,13 @@ function um_settings_structure_conflict_remover( $settings_structure ) {
                     'options' => $um_pages,
                     'label'   => __( 'Conflict Remover - UM Form Pages with conflict', 'ultimate-member' ),
                     'tooltip' => __( 'Select single or multiple UM Form Pages where you will remove conflicting Plugins', 'ultimate-member' )
+                );
+
+    $settings_structure['access']['sections']['other']['fields'][] = array(
+                    'id'      => 'um_conflict_remover_um_page_ids',
+                    'type'    => 'text',
+                    'label'   => __( 'Conflict Remover - Page IDs with conflict', 'ultimate-member' ),
+                    'tooltip' => __( 'Enter comma separated Page IDs where you will remove conflicting Plugins', 'ultimate-member' )
                 );
 
     $settings_structure['access']['sections']['other']['fields'][] = array(
