@@ -163,8 +163,8 @@ function um_settings_structure_conflict_remover( $settings_structure ) {
     $settings_structure['access']['sections']['other']['fields'][] = array(
                     'id'      => 'um_conflict_remover_um_page_ids',
                     'type'    => 'text',
-                    'label'   => __( 'Conflict Remover - Page IDs with conflict', 'ultimate-member' ),
-                    'tooltip' => __( 'Enter comma separated Page IDs where you will remove conflicting Plugins', 'ultimate-member' )
+                    'label'   => __( 'Conflict Remover - Page/Post IDs with conflict', 'ultimate-member' ),
+                    'tooltip' => __( 'Enter comma separated Page/Post IDs where you will remove conflicting Plugins', 'ultimate-member' )
                 );
 
     $settings_structure['access']['sections']['other']['fields'][] = array(
