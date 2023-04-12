@@ -2,7 +2,7 @@
 /**
  * Plugin Name:     Ultimate Member - Conflict Remover
  * Description:     Extension to Ultimate Member to exclude conflicting scripts and styles from UM pages.
- * Version:         2.0.0 
+ * Version:         2.1.0 
  * Requires PHP:    7.4
  * Author:          Miss Veronica
  * License:         GPL v2 or later
@@ -73,48 +73,52 @@ function um_conflict_remover_scripts_and_styles() {
     if ( $remove ) {
 
         $um_plugins = UM()->options()->get( 'um_conflict_remover_plugins' );
-        $remove_handles = array(
-                    'scripts' => array(),
-                    'styles'  => array()
-                );
 
-        foreach ( $wp_scripts->registered as $value ) {
-            foreach ( $um_plugins as $um_plugin ) {
+        if ( ! empty( $um_plugins )) {
 
-                if ( strpos( $value->src, $um_plugin ) !== FALSE ) {
-                    $remove_handles['scripts'][] = $value->handle;
-                }
-            }
-        }
+            $remove_handles = array(
+                        'scripts' => array(),
+                        'styles'  => array()
+                    );
 
-        foreach ( $wp_styles->registered as $value ) {
-            foreach ( $um_plugins as $um_plugin ) {
+            foreach ( $wp_scripts->registered as $value ) {
+                foreach ( $um_plugins as $um_plugin ) {
 
-                if ( strpos( $value->src, $um_plugin ) !== FALSE ) {
-                    $remove_handles['styles'][] = $value->handle;
-                }
-            }
-        }
-
-        if ( count( $remove_handles['scripts'] ) > 0 ) {
-            if ( is_array( $wp_scripts->queue ) ) {
-
-                foreach ( $wp_scripts->queue as $key => $handle ) {
-
-                    if ( in_array( $handle, $remove_handles['scripts'] ) ) {
-                        unset( $wp_scripts->queue[$key] );
+                    if ( strpos( $value->src, $um_plugin ) !== FALSE ) {
+                        $remove_handles['scripts'][] = $value->handle;
                     }
                 }
             }
-        }
 
-        if ( count( $remove_handles['styles'] ) > 0 ) {
-            if ( is_array( $wp_styles->queue ) ) {
+            foreach ( $wp_styles->registered as $value ) {
+                foreach ( $um_plugins as $um_plugin ) {
 
-                foreach ( $wp_styles->queue as $key => $handle ) {
+                    if ( strpos( $value->src, $um_plugin ) !== FALSE ) {
+                        $remove_handles['styles'][] = $value->handle;
+                    }
+                }
+            }
 
-                    if ( in_array( $handle, $remove_handles['styles'] ) ) {
-                        unset( $wp_styles->queue[$key] );
+            if ( count( $remove_handles['scripts'] ) > 0 ) {
+                if ( is_array( $wp_scripts->queue ) ) {
+
+                    foreach ( $wp_scripts->queue as $key => $handle ) {
+
+                        if ( in_array( $handle, $remove_handles['scripts'] ) ) {
+                            unset( $wp_scripts->queue[$key] );
+                        }
+                    }
+                }
+            }
+
+            if ( count( $remove_handles['styles'] ) > 0 ) {
+                if ( is_array( $wp_styles->queue ) ) {
+
+                    foreach ( $wp_styles->queue as $key => $handle ) {
+
+                        if ( in_array( $handle, $remove_handles['styles'] ) ) {
+                            unset( $wp_styles->queue[$key] );
+                        }
                     }
                 }
             }
