@@ -1,5 +1,5 @@
 # UM Conflict Remover
-Extension to Ultimate Member to exclude conflicting scripts and styles from UM backend and frontend pages and Page IDs.
+Extension to Ultimate Member to exclude conflicting scripts and styles from UM backend and frontend pages and Pages/Page IDs.
 
 ## Settings
 UM Settings -> Access -> Other
