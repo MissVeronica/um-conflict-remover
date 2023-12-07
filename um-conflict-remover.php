@@ -1,8 +1,8 @@
 <?php
 /**
  * Plugin Name:     Ultimate Member - Conflict Remover
- * Description:     Extension to Ultimate Member to exclude conflicting scripts and styles from UM frontend and backend pages.
- * Version:         3.0.0 
+ * Description:     Extension to Ultimate Member to exclude conflicting scripts and styles from UM frontend and backend pages and UM select2 scripts.
+ * Version:         3.1.0
  * Requires PHP:    7.4
  * Author:          Miss Veronica
  * License:         GPL v2 or later
@@ -22,15 +22,26 @@ class UM_Conflict_Remover {
 
         if( is_admin()) {
 
-            add_filter( 'um_settings_structure',   array( $this, 'um_settings_structure_conflict_remover' ), 10, 1 );
-            add_action( 'admin_enqueue_scripts',   array( $this, 'um_conflict_remover_backend_scripts_and_styles' ), 999, 1 );
+            add_filter( 'um_settings_structure',      array( $this, 'um_settings_structure_conflict_remover' ), 10, 1 );
+            add_action( 'admin_enqueue_scripts',      array( $this, 'um_conflict_remover_backend_scripts_and_styles' ), 999, 1 );
 
         } else {
 
-            add_action( 'wp_print_footer_scripts', array( $this, 'um_conflict_remover_scripts_and_styles' ), 9 );
-            add_action( 'wp_print_scripts',        array( $this, 'um_conflict_remover_scripts_and_styles' ), 9 );
-            add_action( 'wp_print_styles',         array( $this, 'um_conflict_remover_scripts_and_styles' ), 9 );
+            add_action( 'wp_print_footer_scripts',    array( $this, 'um_conflict_remover_scripts_and_styles' ), 9 );
+            add_action( 'wp_print_scripts',           array( $this, 'um_conflict_remover_scripts_and_styles' ), 9 );
+            add_action( 'wp_print_styles',            array( $this, 'um_conflict_remover_scripts_and_styles' ), 9 );
+            add_filter( 'um_dequeue_select2_scripts', array( $this, 'um_conflict_remover_dequeue_um_select2' ), 10, 1 );
         }
+    }
+
+    public function um_conflict_remover_dequeue_um_select2( $bool ) {
+
+        if ( UM()->options()->get( 'um_conflict_remover_dequeue_um_select2' ) == 1 ) {
+
+            $bool = true;
+        }
+
+        return $bool;
     }
 
     public function um_conflict_remover_backend_scripts_and_styles( $hook ) {
@@ -214,6 +225,13 @@ class UM_Conflict_Remover {
                         'options' => $plugin_list,
                         'label'   => __( 'Conflict Remover - Active Plugins to exclude', 'ultimate-member' ),
                         'tooltip' => __( 'Select single or multiple Plugins for exclusion of their conflicting scripts and styles.', 'ultimate-member' )
+                    );
+
+        $settings_structure['access']['sections']['other']['fields'][] = array(
+                        'id'            => 'um_conflict_remover_dequeue_um_select2',
+                        'type'          => 'checkbox',
+                        'label'         => __( 'Conflict Remover - Dequeue UM select2 scripts', 'ultimate-member' ),
+                        'tooltip'       => __( 'Click to dequeue UM select2 scripts.', 'ultimate-member' ),
                     );
 
         return $settings_structure;
