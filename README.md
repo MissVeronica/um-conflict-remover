@@ -7,9 +7,11 @@ UM Settings -> Access -> Other
 2. Conflict Remover - UM Backend pages - Click to include the UM backend pages in remove conflicting Plugins.
 3. Conflict Remover - Page/Post IDs with conflict - Enter comma separated Page/Post IDs where you will remove conflicting Plugins
 4. Conflict Remover - Active Plugins to exclude - Select single or multiple Plugins for exclusion of their conflicting scripts and styles
+5. Conflict Remover - Dequeue UM select2 scripts - Click to dequeue UM select2 scripts.
 
 ## Updates
 1. Version 3.0.0 Option to include backend UM pages.
+2. Version 3.1.0 Option to dequeue UM select2 scripts
 
 ## Installation
 Download the zip file and install as a WP Plugin, activate the plugin.
