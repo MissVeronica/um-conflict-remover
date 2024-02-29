@@ -2,7 +2,7 @@
 /**
  * Plugin Name:     Ultimate Member - Conflict Remover
  * Description:     Extension to Ultimate Member to exclude conflicting scripts and styles from UM frontend and backend pages and UM select2 scripts.
- * Version:         3.1.0
+ * Version:         3.2.0
  * Requires PHP:    7.4
  * Author:          Miss Veronica
  * License:         GPL v2 or later
@@ -10,7 +10,7 @@
  * Author URI:      https://github.com/MissVeronica?tab=repositories
  * Text Domain:     ultimate-member
  * Domain Path:     /languages
- * UM version:      2.6.10
+ * UM version:      2.8.3
  */
 
 if ( ! defined( 'ABSPATH' ) ) exit;
@@ -195,43 +195,46 @@ class UM_Conflict_Remover {
 
         asort( $plugin_list );
 
-        $settings_structure['access']['sections']['other']['fields'][] = array(
-                        'id'      => 'um_conflict_remover_um_pages',
-                        'type'    => 'select',
-                        'multi'   => true,
-                        'options' => $um_pages,
-                        'label'   => __( 'Conflict Remover - UM Form Pages with conflict', 'ultimate-member' ),
-                        'tooltip' => __( 'Select single or multiple UM Form Pages where you will remove conflicting Plugins', 'ultimate-member' )
+        $settings_structure['access']['sections']['other']['form_sections']['conflict_remover']['title']       = __( 'Conflict Remover', 'ultimate-member' );
+        $settings_structure['access']['sections']['other']['form_sections']['conflict_remover']['description'] = __( 'Plugin version 3.2.0 - tested with UM 2.8.3', 'ultimate-member' );
+
+        $settings_structure['access']['sections']['other']['form_sections']['conflict_remover']['fields'][] = array(
+                        'id'          => 'um_conflict_remover_um_pages',
+                        'type'        => 'select',
+                        'multi'       => true,
+                        'options'     => $um_pages,
+                        'label'       => __( 'UM Form Pages with conflict', 'ultimate-member' ),
+                        'description' => __( 'Select single or multiple UM Form Pages where you will remove conflicting Plugins', 'ultimate-member' )
                     );
 
-        $settings_structure['access']['sections']['other']['fields'][] = array(
-                        'id'            => 'um_conflict_remover_backend_pages',
-                        'type'          => 'checkbox',
-                        'label'         => __( 'Conflict Remover - UM Backend pages', 'ultimate-member' ),
-                        'tooltip'       => __( 'Click to include the UM backend pages in remove conflicting Plugins.', 'ultimate-member' ),
+        $settings_structure['access']['sections']['other']['form_sections']['conflict_remover']['fields'][] = array(
+                        'id'          => 'um_conflict_remover_backend_pages',
+                        'type'        => 'checkbox',
+                        'label'       => __( 'UM Backend pages', 'ultimate-member' ),
+                        'description' => __( 'Click to include the UM backend pages in remove conflicting Plugins.', 'ultimate-member' ),
                         );
 
-        $settings_structure['access']['sections']['other']['fields'][] = array(
-                        'id'      => 'um_conflict_remover_um_page_ids',
-                        'type'    => 'text',
-                        'label'   => __( 'Conflict Remover - Page/Post IDs with conflict', 'ultimate-member' ),
-                        'tooltip' => __( 'Enter comma separated Page/Post IDs where you will remove conflicting Plugins', 'ultimate-member' )
+        $settings_structure['access']['sections']['other']['form_sections']['conflict_remover']['fields'][] = array(
+                        'id'          => 'um_conflict_remover_um_page_ids',
+                        'type'        => 'text',
+                        'label'       => __( 'Page/Post IDs with conflict', 'ultimate-member' ),
+                        'description' => __( 'Enter comma separated Page/Post IDs where you will remove conflicting Plugins', 'ultimate-member' )
                     );
 
-        $settings_structure['access']['sections']['other']['fields'][] = array(
-                        'id'      => 'um_conflict_remover_plugins',
-                        'type'    => 'select',
-                        'multi'   => true,
-                        'options' => $plugin_list,
-                        'label'   => __( 'Conflict Remover - Active Plugins to exclude', 'ultimate-member' ),
-                        'tooltip' => __( 'Select single or multiple Plugins for exclusion of their conflicting scripts and styles.', 'ultimate-member' )
+        $settings_structure['access']['sections']['other']['form_sections']['conflict_remover']['fields'][] = array(
+                        'id'          => 'um_conflict_remover_plugins',
+                        'type'        => 'select',
+                        'multi'       => true,
+                        'options'     => $plugin_list,
+                        'label'       => __( 'Active Plugins to exclude', 'ultimate-member' ),
+                        'description' => __( 'Select single or multiple Plugins for exclusion of their conflicting scripts and styles.', 'ultimate-member' )
                     );
 
-        $settings_structure['access']['sections']['other']['fields'][] = array(
+        $settings_structure['access']['sections']['other']['form_sections']['conflict_remover']['fields'][] = array(
                         'id'            => 'um_conflict_remover_dequeue_um_select2',
                         'type'          => 'checkbox',
-                        'label'         => __( 'Conflict Remover - Dequeue UM select2 scripts', 'ultimate-member' ),
-                        'tooltip'       => __( 'Click to dequeue UM select2 scripts.', 'ultimate-member' ),
+                        'label'         => __( 'Dequeue UM select2 scripts', 'ultimate-member' ),
+                        'description'   => __( 'Click to dequeue UM select2 scripts.', 'ultimate-member' ),
                     );
 
         return $settings_structure;
