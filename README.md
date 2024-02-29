@@ -12,6 +12,7 @@ UM Settings -> Access -> Other
 ## Updates
 1. Version 3.0.0 Option to include backend UM pages.
 2. Version 3.1.0 Option to dequeue UM select2 scripts
+3. Version 3.2.0 Updated for UM 2.8.3
 
 ## Installation
 Download the zip file and install as a WP Plugin, activate the plugin.
