@@ -15,4 +15,4 @@ UM Settings -> Access -> Other
 3. Version 3.2.0 Updated for UM 2.8.3
 
 ## Installation
-Download the zip file and install as a WP Plugin, activate the plugin.
+Download the zip file via the Green Code button and install as a WP Plugin, activate the plugin.
