@@ -14,5 +14,5 @@ Extension to Ultimate Member to exclude conflicting scripts and styles from UM b
 3. Version 3.2.0 Updated for UM 2.8.3
 4. Version 3.3.0 Added Plugin settings link.
 
-## Installation
+## Installation & Updates
 Download the zip file via the Green Code button and install as a WP Plugin, activate the plugin.
