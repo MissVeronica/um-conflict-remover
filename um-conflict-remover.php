@@ -2,15 +2,17 @@
 /**
  * Plugin Name:     Ultimate Member - Conflict Remover
  * Description:     Extension to Ultimate Member to exclude conflicting scripts and styles from UM frontend and backend pages and UM select2 scripts.
- * Version:         3.2.0
+ * Version:         3.3.0
  * Requires PHP:    7.4
  * Author:          Miss Veronica
  * License:         GPL v2 or later
  * License URI:     https://www.gnu.org/licenses/gpl-2.0.html
  * Author URI:      https://github.com/MissVeronica?tab=repositories
+ * Plugin URI:      https://github.com/MissVeronica/um-conflict-remover
+ * Update URI:      https://github.com/MissVeronica/um-conflict-remover
  * Text Domain:     ultimate-member
  * Domain Path:     /languages
- * UM version:      2.8.3
+ * UM version:      2.10.4
  */
 
 if ( ! defined( 'ABSPATH' ) ) exit;
@@ -20,10 +22,13 @@ class UM_Conflict_Remover {
 
     function __construct( ) {
 
+        define( 'Plugin_Basename_CR', plugin_basename( __FILE__ ));
+
         if( is_admin()) {
 
             add_filter( 'um_settings_structure',      array( $this, 'um_settings_structure_conflict_remover' ), 10, 1 );
             add_action( 'admin_enqueue_scripts',      array( $this, 'um_conflict_remover_backend_scripts_and_styles' ), 999, 1 );
+            add_filter( 'plugin_action_links_' . Plugin_Basename_CR, array( $this, 'content_moderation_settings_link' ), 10 );
 
         } else {
 
@@ -32,6 +37,14 @@ class UM_Conflict_Remover {
             add_action( 'wp_print_styles',            array( $this, 'um_conflict_remover_scripts_and_styles' ), 9 );
             add_filter( 'um_dequeue_select2_scripts', array( $this, 'um_conflict_remover_dequeue_um_select2' ), 10, 1 );
         }
+    }
+
+    public function content_moderation_settings_link( $links ) {
+
+        $url = get_admin_url() . 'admin.php?page=um_options&tab=access&section=other';
+        $links[] = '<a href="' . esc_url( $url ) . '">' . esc_html__( 'Settings' ) . '</a>';
+    
+        return $links;
     }
 
     public function um_conflict_remover_dequeue_um_select2( $bool ) {
@@ -194,47 +207,49 @@ class UM_Conflict_Remover {
         }
 
         asort( $plugin_list );
+        $prefix = '&nbsp; * &nbsp;';
+        $plugin_data = get_plugin_data( __FILE__ );
 
-        $settings_structure['access']['sections']['other']['form_sections']['conflict_remover']['title']       = __( 'Conflict Remover', 'ultimate-member' );
-        $settings_structure['access']['sections']['other']['form_sections']['conflict_remover']['description'] = __( 'Plugin version 3.2.0 - tested with UM 2.8.3', 'ultimate-member' );
+        $settings_structure['access']['sections']['other']['form_sections']['conflict_remover']['title']       = esc_html__( 'Conflict Remover', 'ultimate-member' );
+        $settings_structure['access']['sections']['other']['form_sections']['conflict_remover']['description'] = sprintf( esc_html__( 'Plugin version %s - tested with UM 2.10.4', 'ultimate-member' ), $plugin_data['Version'] );
 
         $settings_structure['access']['sections']['other']['form_sections']['conflict_remover']['fields'][] = array(
-                        'id'          => 'um_conflict_remover_um_pages',
-                        'type'        => 'select',
-                        'multi'       => true,
-                        'options'     => $um_pages,
-                        'label'       => __( 'UM Form Pages with conflict', 'ultimate-member' ),
-                        'description' => __( 'Select single or multiple UM Form Pages where you will remove conflicting Plugins', 'ultimate-member' )
+                        'id'             => 'um_conflict_remover_um_pages',
+                        'type'           => 'select',
+                        'multi'          => true,
+                        'options'        => $um_pages,
+                        'label'          => $prefix . esc_html__( 'UM Form Pages with conflict', 'ultimate-member' ),
+                        'description'    => esc_html__( 'Select single or multiple UM Form Pages where you will remove conflicting Plugins', 'ultimate-member' )
                     );
 
         $settings_structure['access']['sections']['other']['form_sections']['conflict_remover']['fields'][] = array(
-                        'id'          => 'um_conflict_remover_backend_pages',
-                        'type'        => 'checkbox',
-                        'label'       => __( 'UM Backend pages', 'ultimate-member' ),
-                        'description' => __( 'Click to include the UM backend pages in remove conflicting Plugins.', 'ultimate-member' ),
+                        'id'             => 'um_conflict_remover_backend_pages',
+                        'type'           => 'checkbox',
+                        'label'          => $prefix . esc_html__( 'UM Backend pages', 'ultimate-member' ),
+                        'checkbox_label' => esc_html__( 'Click to include the UM backend pages in remove conflicting Plugins.', 'ultimate-member' ),
                         );
 
         $settings_structure['access']['sections']['other']['form_sections']['conflict_remover']['fields'][] = array(
-                        'id'          => 'um_conflict_remover_um_page_ids',
-                        'type'        => 'text',
-                        'label'       => __( 'Page/Post IDs with conflict', 'ultimate-member' ),
-                        'description' => __( 'Enter comma separated Page/Post IDs where you will remove conflicting Plugins', 'ultimate-member' )
+                        'id'             => 'um_conflict_remover_um_page_ids',
+                        'type'           => 'text',
+                        'label'          => $prefix . esc_html__( 'Page/Post IDs with conflict', 'ultimate-member' ),
+                        'description'    => esc_html__( 'Enter comma separated Page/Post IDs where you will remove conflicting Plugins', 'ultimate-member' )
                     );
 
         $settings_structure['access']['sections']['other']['form_sections']['conflict_remover']['fields'][] = array(
-                        'id'          => 'um_conflict_remover_plugins',
-                        'type'        => 'select',
-                        'multi'       => true,
-                        'options'     => $plugin_list,
-                        'label'       => __( 'Active Plugins to exclude', 'ultimate-member' ),
-                        'description' => __( 'Select single or multiple Plugins for exclusion of their conflicting scripts and styles.', 'ultimate-member' )
+                        'id'             => 'um_conflict_remover_plugins',
+                        'type'           => 'select',
+                        'multi'          => true,
+                        'options'        => $plugin_list,
+                        'label'          => $prefix . esc_html__( 'Active Plugins to exclude', 'ultimate-member' ),
+                        'description'    => esc_html__( 'Select single or multiple Plugins for exclusion of their conflicting scripts and styles.', 'ultimate-member' )
                     );
 
         $settings_structure['access']['sections']['other']['form_sections']['conflict_remover']['fields'][] = array(
-                        'id'            => 'um_conflict_remover_dequeue_um_select2',
-                        'type'          => 'checkbox',
-                        'label'         => __( 'Dequeue UM select2 scripts', 'ultimate-member' ),
-                        'description'   => __( 'Click to dequeue UM select2 scripts.', 'ultimate-member' ),
+                        'id'             => 'um_conflict_remover_dequeue_um_select2',
+                        'type'           => 'checkbox',
+                        'label'          => $prefix . esc_html__( 'Dequeue UM select2 scripts', 'ultimate-member' ),
+                        'checkbox_label' => esc_html__( 'Click to dequeue UM select2 scripts.', 'ultimate-member' ),
                     );
 
         return $settings_structure;
